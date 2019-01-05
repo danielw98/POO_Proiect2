@@ -27,6 +27,12 @@
     <ClCompile Include="College.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RepoTemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RepoRoom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Activity.h">
@@ -36,6 +42,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="College.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RepoTemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RepoRoom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

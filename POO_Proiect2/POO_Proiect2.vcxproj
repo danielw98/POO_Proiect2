@@ -120,12 +120,16 @@
   <ItemGroup>
     <ClCompile Include="Activity.cpp" />
     <ClCompile Include="College.cpp" />
+    <ClCompile Include="RepoRoom.cpp" />
+    <ClCompile Include="RepoTemplate.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Activity.h" />
     <ClInclude Include="College.h" />
+    <ClInclude Include="RepoRoom.h" />
+    <ClInclude Include="RepoTemplate.h" />
     <ClInclude Include="Room.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

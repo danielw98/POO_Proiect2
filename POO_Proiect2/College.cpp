@@ -1,32 +1,38 @@
 #include "College.h"
 
-College::College() {};
-College::~College() {};
+College::College() {
+	//Here we will create a scenario, for ease of testing
+	//We create some rooms
+	_rr.add(new Room("Camera1"));
+	_rr.add(new Room("Camera2"));
+	_rr.add(new Room("Camera3"));
+	_rr.add(new Room("Camera4"));
+	_rr.add(new Room("Camera5"));
+	_rr.add(new Room("Camera6"));
+	_rr.add(new Room("Camera7"));
+};
+College::~College() {}
 
 void College::addRoom(string name)
 {
-	_rooms.push_back(new Room(name));
+	_rr.add(new Room(name));
 
 	cout << "Succes room addition" << endl;
 }
 void College::delRoom(string name)
 {
-	for (int i = 0; i < _rooms.size(); i++)
-		if (_rooms[i]->getName() ==  name)
-		{
-			delete _rooms[i]; //Free pointer before removing
-			_rooms.erase(_rooms.begin() + i);
-			i--;
-			//_rooms[i] = _rooms.back();
-			//_rooms.pop_back();
-		}
-
-	cout << "Succes room deletion" << endl;
+	if( _rr.remove(name) )
+		cout << "Succes room deletion" << endl;
+	else
+		cout << "Something went wrong, probably the room does not exist" << endl;
 }
-void College::listRooms()
+
+
+
+void College::listAll(unsigned int choice)
 {
-	cout << "Rooms: \n";
-	int size = _rooms.size();
-	for (int i = 0; i < size; i++)
-		cout << _rooms[i]->getName() << endl;
+	if (choice == 0) {
+		cout << "Rooms: \n";
+		_rr.printAll();
+	}
 }

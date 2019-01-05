@@ -47,15 +47,16 @@ int main() {
 			pause();
 			break;
 		case 3:
-			C.listRooms();
+			C.listAll(0);
 			pause();
 			break;
 		case 0:
 			cout << "Good Bye" << endl;
-			exit(0);
+			option = 0;
+			break;
 		default:
 			cout << "Invalid option. Bye" << endl;
-			exit(0);
+			option = 0;;
 		}
 	}
 	

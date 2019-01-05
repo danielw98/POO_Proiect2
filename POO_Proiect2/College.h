@@ -1,11 +1,11 @@
 #pragma once
-#include "Room.h"
-#include "Activity.h"
 #include <vector>
 #include <string>
 #include <iostream>
-
 using namespace std;
+#include "Room.h"
+#include "Activity.h"
+#include "RepoRoom.h"
 
 class College
 {
@@ -16,8 +16,8 @@ public:
 	//Functions for college
 	void addRoom(string name);
 	void delRoom(string name);
-	void listRooms();
+	void listAll(unsigned int choice);
 
 private:
-	vector<Room*> _rooms;
+	RepoRoom _rr;
 };
