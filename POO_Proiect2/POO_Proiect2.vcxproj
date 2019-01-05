@@ -120,14 +120,20 @@
   <ItemGroup>
     <ClCompile Include="Activity.cpp" />
     <ClCompile Include="College.cpp" />
+    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="RepoPerson.cpp" />
     <ClCompile Include="RepoRoom.cpp" />
-    <ClCompile Include="RepoTemplate.cpp" />
+    <ClCompile Include="RepoTemplate.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Activity.h" />
     <ClInclude Include="College.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="RepoPerson.h" />
     <ClInclude Include="RepoRoom.h" />
     <ClInclude Include="RepoTemplate.h" />
     <ClInclude Include="Room.h" />

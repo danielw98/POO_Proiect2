@@ -1,8 +1,7 @@
 #include<iostream>
 #include<conio.h>
-#include "College.h"
-
 using namespace std;
+#include "College.h"
 
 //Console view functions
 void print_banner() {
@@ -36,7 +35,7 @@ int main() {
 		{
 		case 1:
 			cout << "Room name: " << endl;
-			getline(cin >> ws, res);
+			getline(cin >> ws, res);  //We use ws for getline to work
 			C.addRoom(res);
 			pause();
 			break;

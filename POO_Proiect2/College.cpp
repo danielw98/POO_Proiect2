@@ -13,6 +13,7 @@ College::College() {
 };
 College::~College() {}
 
+//Rooms
 void College::addRoom(string name)
 {
 	_rr.add(new Room(name));
@@ -27,7 +28,15 @@ void College::delRoom(string name)
 		cout << "Something went wrong, probably the room does not exist" << endl;
 }
 
+//Persons
+void College::addPerson(string name) {
+	_rp.add(new Person(name, Person::Role::HEADMASTER));
 
+	cout << "Succes Person addition" << endl;
+}
+void College::delPerson(string name) {
+
+}
 
 void College::listAll(unsigned int choice)
 {
@@ -35,4 +44,8 @@ void College::listAll(unsigned int choice)
 		cout << "Rooms: \n";
 		_rr.printAll();
 	}
+}
+
+void getCurrentPersonRoles() {
+
 }
