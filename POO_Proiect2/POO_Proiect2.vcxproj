@@ -120,9 +120,15 @@
   <ItemGroup>
     <ClCompile Include="Activity.cpp" />
     <ClCompile Include="College.cpp" />
+    <ClCompile Include="DidacticActivity.cpp" />
+    <ClCompile Include="MaintenanceActivity.cpp" />
     <ClCompile Include="Person.cpp" />
+    <ClCompile Include="PromotingActivity.cpp" />
+    <ClCompile Include="RegisterPage.cpp" />
+    <ClCompile Include="RepoActivity.cpp" />
     <ClCompile Include="RepoPerson.cpp" />
     <ClCompile Include="RepoRoom.cpp" />
+    <ClCompile Include="RepoStudentsRegister.cpp" />
     <ClCompile Include="RepoTemplate.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -132,9 +138,15 @@
   <ItemGroup>
     <ClInclude Include="Activity.h" />
     <ClInclude Include="College.h" />
+    <ClInclude Include="DidacticActivity.h" />
+    <ClInclude Include="MaintenanceActivity.h" />
     <ClInclude Include="Person.h" />
+    <ClInclude Include="PromotingActivity.h" />
+    <ClInclude Include="RegisterPage.h" />
+    <ClInclude Include="RepoActivity.h" />
     <ClInclude Include="RepoPerson.h" />
     <ClInclude Include="RepoRoom.h" />
+    <ClInclude Include="RepoStudentsRegister.h" />
     <ClInclude Include="RepoTemplate.h" />
     <ClInclude Include="Room.h" />
   </ItemGroup>

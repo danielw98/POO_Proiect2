@@ -1,7 +1,21 @@
 #include "College.h"
+#include <algorithm>  //So we can use find
 
+//Constructor and destructor
 College::College() {
 	//Here we will create a scenario, for ease of testing
+
+	//We create the roles accepted in this college
+	_acceptedRoles.push_back("PROFFESSOR");
+	_acceptedRoles.push_back("STUDENT");
+	_acceptedRoles.push_back("HEADMASTER");
+	_acceptedRoles.push_back("PROMOTER");
+
+	//We create the activity types accepted in this college
+	_acceptedActivityTypes.push_back("DIDACTIC");  //0
+	_acceptedActivityTypes.push_back("PROMOTING");  //1
+	_acceptedActivityTypes.push_back("MAINTENANCE");  //2
+
 	//We create some rooms
 	_rr.add(new Room("Camera1"));
 	_rr.add(new Room("Camera2"));
@@ -10,32 +24,196 @@ College::College() {
 	_rr.add(new Room("Camera5"));
 	_rr.add(new Room("Camera6"));
 	_rr.add(new Room("Camera7"));
+
+	//We create some persons
+	_rp.add(new Person("Persoana1", "1234567890123", "PROFFESSOR"));
+	_rp.add(new Person("Persoana2", "1234567890124", "PROFFESSOR"));
+	_rp.add(new Person("Persoana3", "1234567890125", "STUDENT"));
+	_rp.add(new Person("Persoana4", "1234567890126", "STUDENT"));
+	_rp.add(new Person("Persoana5", "1234567890127", "STUDENT"));
+	_rp.add(new Person("Persoana6", "1234567890128", "HEADMASTER"));
+	_rp.add(new Person("Persoana7", "1234567890129", "PROMOTER"));
+
+	//We create some activities
+	_ra.add(new DidacticActivity("Didactic1", "DDetails", _rr.findByName("Camera1"), _rp.findByName("Persoana1"), vector<string> {"Math", "English", "Sport"}));
+	_ra.add(new DidacticActivity("Didactic2", "DDetails", _rr.findByName("Camera2"), _rp.findByName("Persoana2"), vector<string> {"Physics", "English"}));
+	_ra.add(new DidacticActivity("Didactic3", "DDetails", _rr.findByName("Camera3"), _rp.findByName("Persoana1"), vector<string> {"Math", "Chemestry", "Biology"}));
+	_ra.add(new DidacticActivity("Didactic4", "DDetails", _rr.findByName("Camera1"), _rp.findByName("Persoana2"), vector<string> {"Chemestry", "Algebra"}));
+	_ra.add(new MaintenanceActivity("Maintenance1", "MDetails", _rr.findByName("Camera5"), _rp.findByName("Persoana6")));
+	_ra.add(new PromotingActivity("Promoting1", "PDetails", _rr.findByName("Camera7"), _rp.findByName("Persoana7")));
 };
 College::~College() {}
 
 //Rooms
-void College::addRoom(string name)
-{
+void College::addRoom() {
+	string name;
+
+	cout << "Please insert the room name: ";
+	getline(cin >> ws, name);  //We use ws for getline to work
+	
 	_rr.add(new Room(name));
 
 	cout << "Succes room addition" << endl;
 }
-void College::delRoom(string name)
-{
-	if( _rr.remove(name) )
-		cout << "Succes room deletion" << endl;
+void College::delRoom() {
+	string name;
+
+	cout << "Please insert the room name: ";
+	getline(cin >> ws, name);
+
+	Room* roomToDel = _rr.findByName(name);
+	if (roomToDel)
+	{
+		if (_rr.remove(roomToDel))
+			cout << "Succes room deletion" << endl;
+	}
 	else
 		cout << "Something went wrong, probably the room does not exist" << endl;
 }
 
 //Persons
-void College::addPerson(string name) {
-	_rp.add(new Person(name, Person::Role::HEADMASTER));
+void College::addPerson(unsigned int insertType) {
+	string name;
+	string cnp;
+	unsigned int roleIndex;
 
-	cout << "Succes Person addition" << endl;
+	this->listAcceptedRoles(); //We ask college for roles
+
+	cout << "Please insert the person name: ";
+	getline(cin >> ws, name);
+	cout << "Please pick a role (index) for this person: ";
+	cin >> roleIndex;
+
+	if (insertType == 1) { //We ask for cnp also
+		cout << "Please insert the CNP of this person: ";
+		getline(cin >> ws, cnp);
+	}
+
+
+	if (isThisRoleAccepted(roleIndex))
+	{
+		_rp.add(new Person(name, cnp, getRoleByIndex(roleIndex)));
+		cout << "Succes Person addition" << endl;
+	}
+	else
+		cout << "This role is not accepted in this college." << endl;
 }
-void College::delPerson(string name) {
+void College::delPerson(unsigned int delType) {
+	Person* personToDel = NULL;
 
+	if (delType == 0) {
+		string name;
+		cout << "Please insert the person name: ";
+		getline(cin >> ws, name);
+		personToDel = _rp.findByName(name);
+	}
+	else if (delType == 1) {
+		string CNP;
+		cout << "Please insert the CNP: ";
+		getline(cin >> ws, CNP);
+		personToDel = _rp.findByCNP(CNP);
+	}
+
+	//If the person was found
+	if (personToDel)
+	{
+		if (_rp.remove(personToDel))
+			cout << "Succes person deletion" << endl;
+	}
+	else
+		cout << "Something went wrong, probably the person does not exist" << endl;
+}
+
+//Activities
+void College::addActivity() {
+	string name;
+	string details;
+	string rName;
+	string cnp;
+	Room* room = NULL;
+	Person* person = NULL;
+	unsigned int typeIndex;
+
+	cout << "Please insert the activity name: ";
+	getline(cin >> ws, name);
+	
+	cout << "Please insert some details: ";
+	getline(cin >> ws, details);
+	
+	cout << "Please pick a room (name of room): ";
+	getline(cin >> ws, rName);
+	room = _rr.findByName(rName);
+	while (room == NULL) {
+		cout << "This room doesn't exist. Try again. Type \"Quit\" to quit.\n...: ";
+		getline(cin >> ws, rName);
+		if (rName == "Quit")
+			return;
+		room = _rr.findByName(rName);
+	}
+
+	cout << "Please insert the organizer CNP: ";
+	getline(cin >> ws, cnp);
+	person = _rp.findByCNP(cnp);
+	while (room == NULL) {
+		cout << "This person doesn't exist. Try again. Type \"Quit\" to quit.\n...: ";
+		getline(cin >> ws, cnp);
+		if (rName == "Quit")
+			return;
+		room = _rr.findByName(cnp);
+	}
+
+	this->listAcceptedActivityTypes();
+	cout << "Tell us, what activity type this is (index): ";
+	cin >> typeIndex;
+
+	//Verificam compatibilitatea
+	if (!(this->isRoleAndActivityTypeCompatible(typeIndex, person->getRole()))) {
+		cout << "Ne pare rau, rolul persoanei nu este compatibil cua ctivitatea. Reincercati daca doriti." << endl;
+		return;
+	}
+
+	if (typeIndex == 0) {  //Didactic
+		string discipline;
+		vector<string> disciplines;
+
+		cout << "If it is didactic i need to know the Disciplines involved." << endl;
+		cout << "Please insert a discipline and hit enter. To stop type \"Quit\"." << endl;
+
+		getline(cin >> ws, discipline);
+		while (discipline != "Quit") {
+			disciplines.push_back(discipline);
+
+			getline(cin >> ws, discipline);
+		}
+
+		_ra.add(new DidacticActivity(name, details, room, person, disciplines));
+	}
+	else if (typeIndex == 1) {  //Promoting
+		_ra.add(new PromotingActivity(name, details, room, person));
+	}
+	else if (typeIndex == 2) {  //Maintenance
+		_ra.add(new MaintenanceActivity(name, details, room, person));
+	}
+
+	cout << "Activity successfully added" << endl;
+
+}
+void College::delActivity() {
+	Activity* actToDel = NULL;
+	string name;
+
+	cout << "Please insert the activity name: ";
+	getline(cin >> ws, name);
+	actToDel = _ra.findByName(name);
+
+	//If the activity was found
+	if (actToDel)
+	{
+		if (_ra.remove(actToDel))
+			cout << "Succes activity deletion" << endl;
+	}
+	else
+		cout << "Something went wrong, probably the activity does not exist" << endl;
 }
 
 void College::listAll(unsigned int choice)
@@ -44,8 +222,74 @@ void College::listAll(unsigned int choice)
 		cout << "Rooms: \n";
 		_rr.printAll();
 	}
+	else if (choice == 1) {
+		cout << "Persons: \n";
+		_rp.printAll();
+	}
+	else if (choice == 2) {
+		cout << "Activities: \n";
+		_ra.printAll();
+	}
 }
 
-void getCurrentPersonRoles() {
+//Public Relationships functions
+void College::listAcceptedRoles() {
+	cout << "These are the available roles for new persons..." << endl;
+	unsigned int size = _acceptedRoles.size();
+	for (unsigned int i = 0; i < size; i++)
+		cout << i << ". " << _acceptedRoles[i] << endl;
+}
+void College::listAcceptedActivityTypes() {
+	cout << "These are the available activity types for new activities..." << endl;
+	unsigned int size = _acceptedActivityTypes.size();
+	for (unsigned int i = 0; i < size; i++)
+		cout << i << ". " << _acceptedActivityTypes[i] << endl;
+}
 
+//Institute functions
+bool College::isThisRoleAccepted(unsigned int index) {
+	/*
+	//Using iterators instead of basic for loops
+	if (find(_acceptedRoles.begin(), _acceptedRoles.end(), name) != _acceptedRoles.end())
+		return true;
+	else
+		return false;
+	*/
+
+	if (index < 0 || index >= _acceptedRoles.size())
+		return false;
+	else
+		return true;
+}
+string College::getRoleByIndex(unsigned int index) {
+	return _acceptedRoles[index];
+}
+bool College::isThisActivityTypeAccepted(unsigned int index) {
+	/*
+	//Using iterators instead of basic for loops
+	if (find(_acceptedActivityTypes.begin(), _acceptedActivityTypes.end(), name) != _acceptedActivityTypes.end())
+		return true;
+	else
+		return false;
+	*/
+
+	if (index < 0 || index >= _acceptedActivityTypes.size())
+		return false;
+	else
+		return true;
+}
+string College::getActivityTypeByIndex(unsigned int index) {
+	return _acceptedActivityTypes[index];
+}
+bool College::isRoleAndActivityTypeCompatible(unsigned int typeIndex, string role) {
+	if (typeIndex == 0 && role == "PROFFESSOR")  //Didactic si profesor
+		return true;
+	if (typeIndex == 1 && role == "PROMOTER") //Promoting si promoter
+		return true;
+	if (typeIndex == 2 && role == "HEADMASTER")  //Maintenance si HeadMaster
+		return true;
+
+	//Pe viitor odata cu adaugarea rolurilor si activitatilor se pot adauga noi combinatii
+
+	return false;
 }

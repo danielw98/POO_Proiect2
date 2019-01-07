@@ -9,6 +9,7 @@ public:
 	~Room();
 	
 	string getName();
+	friend ostream& operator <<(ostream& out, const Room& src);
 
 private:
 	string _name;

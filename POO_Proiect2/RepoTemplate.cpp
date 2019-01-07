@@ -1,4 +1,5 @@
 #include "RepoTemplate.h"
+#include <algorithm>
 
 template<class T>
 RepoTemplate<T>::RepoTemplate() {}
@@ -17,24 +18,16 @@ void RepoTemplate<T>::add(T* e) {
 }
 
 template<class T>
-bool RepoTemplate<T>::remove(string name) {
-	bool succes = false;
-	for (unsigned int i = 0; i < _entities.size(); i++)
-		if (_entities[i]->getName() == name)
-		{
-			delete _entities[i]; //Free pointer before removing
-			_entities.erase(_entities.begin() + i);
-			i--;
-
-			succes = true;
-		}
-
-	return succes;  //Return to see if succesfull
+bool RepoTemplate<T>::remove(T* e) {
+	delete e; //Free pointer before removing and destroying
+	//To remove the specific item we will use erase and remove
+	_entities.erase(std::remove(_entities.begin(), _entities.end(), e), _entities.end());
+	return true;
 }
 
 template<class T>
 void RepoTemplate<T>::printAll() {
 	int size = _entities.size();
 	for (int i = 0; i < size; i++)
-		cout << _entities[i]->getName() << endl;
+		cout << *_entities[i] << endl;  //Derefrencing. Also impling operator overload for all
 }

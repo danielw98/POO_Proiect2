@@ -1,9 +1,9 @@
-#include "RepoRoom.h"
+#include "RepoActivity.h"
 
-RepoRoom::RepoRoom() {}
-RepoRoom::~RepoRoom() {}
+RepoActivity::RepoActivity() {}
+RepoActivity::~RepoActivity() {}
 
-Room* RepoRoom::findByName(string name) {
+Activity* RepoActivity::findByName(string name) {
 	unsigned int size = _entities.size();
 	for (unsigned int i = 0; i < size; i++)
 	{

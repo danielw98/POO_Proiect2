@@ -1,24 +1,29 @@
 #pragma once
-#include "Room.h"
 #include <string>
-
+#include <vector>
 using namespace std;
+#include "Room.h"
+#include "Person.h"
+
+class Person;  //Forward declaration because we use Activity in Person and vice-versa
 
 class Activity
 {
 public:
-	enum class ActType {     //We define the activity types
-		DIDACTIC,
-		PROMOTING,
-		MAINTENANCE
-	};
+	//Constructors and destructors
+	Activity(string name, string details, Room* room, Person* person);
+	virtual ~Activity();
 
-	Activity(ActType type, string name, string details, Room* room);  //We force the user to use the predefined activities
-	~Activity();
+	//Getters and Setters
+	string getName();
 
-private:
-	ActType _type;
+	virtual void printSpecificDetails() = 0; //This ensures this class is an interface and we can't instantiate it
+	friend ostream& operator <<(ostream& out, const Activity& src);
+
+protected:
 	string _name;
 	string _details;
 	Room* _room;
+	Person* _organizer;
+	vector<Person*> _attendees;
 };

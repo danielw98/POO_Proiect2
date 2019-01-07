@@ -6,4 +6,6 @@ class RepoRoom : public RepoTemplate<Room> {
 public:
 	RepoRoom();
 	~RepoRoom();
+
+	Room* findByName(string name);
 };

@@ -12,7 +12,7 @@ public:
 	~RepoTemplate();
 
 	void add(T* e);
-	bool remove(string name); //We provide the name, because all subclasses have it
+	bool remove(T* e);
 	void printAll();
 
 protected:   //Because I want to see them in subClasses
