@@ -7,8 +7,14 @@ using namespace std;
 
 class RegisterPage {
 public:
-	RegisterPage();
+	//Constructors and destructors
+	RegisterPage(Person* student, vector<string> enrolledDisciplines);
 	~RegisterPage();
+
+	//Getters and Setters
+	Person* getStudent();
+
+	friend ostream& operator <<(ostream& out, const RegisterPage& src);
 
 private:
 	Person* _student;  //Person with student role

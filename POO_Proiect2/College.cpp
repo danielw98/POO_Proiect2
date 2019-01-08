@@ -6,10 +6,10 @@ College::College() {
 	//Here we will create a scenario, for ease of testing
 
 	//We create the roles accepted in this college
-	_acceptedRoles.push_back("PROFFESSOR");
-	_acceptedRoles.push_back("STUDENT");
-	_acceptedRoles.push_back("HEADMASTER");
-	_acceptedRoles.push_back("PROMOTER");
+	_acceptedRoles.push_back("PROFFESSOR");  //0
+	_acceptedRoles.push_back("STUDENT");  //1
+	_acceptedRoles.push_back("HEADMASTER");  //2
+	_acceptedRoles.push_back("PROMOTER");  //3
 
 	//We create the activity types accepted in this college
 	_acceptedActivityTypes.push_back("DIDACTIC");  //0
@@ -33,6 +33,11 @@ College::College() {
 	_rp.add(new Person("Persoana5", "1234567890127", "STUDENT"));
 	_rp.add(new Person("Persoana6", "1234567890128", "HEADMASTER"));
 	_rp.add(new Person("Persoana7", "1234567890129", "PROMOTER"));
+
+	//Also create the register, for now. Because it is AUTO MANAGED
+	_rsr.add(new RegisterPage(_rp.findByName("Persoana3"), vector<string> {"Math", "English"}));
+	_rsr.add(new RegisterPage(_rp.findByName("Persoana4"), vector<string> {"Physics", "Chemestry"}));
+	_rsr.add(new RegisterPage(_rp.findByName("Persoana5"), vector<string> {"Math", "Biology"}));
 
 	//We create some activities
 	_ra.add(new DidacticActivity("Didactic1", "DDetails", _rr.findByName("Camera1"), _rp.findByName("Persoana1"), vector<string> {"Math", "English", "Sport"}));
@@ -74,26 +79,47 @@ void College::delRoom() {
 //Persons
 void College::addPerson(unsigned int insertType) {
 	string name;
-	string cnp;
+	string cnp;  //Defaults to empty
 	unsigned int roleIndex;
 
 	this->listAcceptedRoles(); //We ask college for roles
 
 	cout << "Please insert the person name: ";
 	getline(cin >> ws, name);
-	cout << "Please pick a role (index) for this person: ";
-	cin >> roleIndex;
-
+	
 	if (insertType == 1) { //We ask for cnp also
 		cout << "Please insert the CNP of this person: ";
 		getline(cin >> ws, cnp);
 	}
 
+	cout << "Please pick a role (index) for this person: ";
+	cin >> roleIndex;
+
+	//We ask for disciplines if it is a student
+	vector<string> disciplines;
+	if (roleIndex == 1) {  //We just know the right index. It is the same if we knew the right name for this role, so no biggie
+		string discipline;
+
+		cout << "This is a student, so I need to know the the disciplines for him." << endl;
+		cout << "Please insert a discipline and hit enter. To stop type \"Quit\"." << endl;
+
+		getline(cin >> ws, discipline);
+		while (discipline != "Quit") {
+			disciplines.push_back(discipline);
+
+			getline(cin >> ws, discipline);
+		}
+	}
 
 	if (isThisRoleAccepted(roleIndex))
 	{
-		_rp.add(new Person(name, cnp, getRoleByIndex(roleIndex)));
+		Person* person = new Person(name, cnp, getRoleByIndex(roleIndex));
+		_rp.add(person);
 		cout << "Succes Person addition" << endl;
+
+		//We AUTO add the student to the students register
+		if (roleIndex == 1)
+			_rsr.add(new RegisterPage(person, disciplines));
 	}
 	else
 		cout << "This role is not accepted in this college." << endl;
@@ -117,11 +143,15 @@ void College::delPerson(unsigned int delType) {
 	//If the person was found
 	if (personToDel)
 	{
+		//If this a student, we first delete it (register page) from the register, to avoid accessing NULL pointers
+		if (personToDel->getRole() == "STUDENT")
+			_rsr.remove(_rsr.findByStudent(personToDel));
+
 		if (_rp.remove(personToDel))
 			cout << "Succes person deletion" << endl;
 	}
 	else
-		cout << "Something went wrong, probably the person does not exist" << endl;
+		cout << "Something went wrong, probably the person does not exist." << endl;
 }
 
 //Activities
@@ -176,7 +206,7 @@ void College::addActivity() {
 		string discipline;
 		vector<string> disciplines;
 
-		cout << "If it is didactic i need to know the Disciplines involved." << endl;
+		cout << "This is a didactic activity, so I need to know the Disciplines involved." << endl;
 		cout << "Please insert a discipline and hit enter. To stop type \"Quit\"." << endl;
 
 		getline(cin >> ws, discipline);
@@ -216,6 +246,22 @@ void College::delActivity() {
 		cout << "Something went wrong, probably the activity does not exist" << endl;
 }
 
+//Student Register
+void College::listStudentsOnly() {
+	//We use a repo function to get what we want. Just like a man accessing an app with filter field
+	cout << "Students: \n";
+	_rp.printStudentsOnly();
+}
+
+//Person Perspective
+const Person* College::getPersonByName(string name) {
+	return _rp.findByName(name);
+}
+void College::enrollToActivity(const Person* person) {
+	//We print the activities
+	this->listActivities();
+}
+
 void College::listAll(unsigned int choice)
 {
 	if (choice == 0) {
@@ -229,6 +275,10 @@ void College::listAll(unsigned int choice)
 	else if (choice == 2) {
 		cout << "Activities: \n";
 		_ra.printAll();
+	}
+	else if (choice == 3) {
+		cout << "Registru studenti: \n";
+		_rsr.printAll();
 	}
 }
 
@@ -244,6 +294,9 @@ void College::listAcceptedActivityTypes() {
 	unsigned int size = _acceptedActivityTypes.size();
 	for (unsigned int i = 0; i < size; i++)
 		cout << i << ". " << _acceptedActivityTypes[i] << endl;
+}
+void College::listActivities() {
+	_ra.printSummary();
 }
 
 //Institute functions

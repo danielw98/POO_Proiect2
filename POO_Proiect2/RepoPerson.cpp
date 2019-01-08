@@ -24,3 +24,12 @@ Person* RepoPerson::findByCNP(string cnp) {
 
 	return NULL;
 }
+
+void RepoPerson::printStudentsOnly() {
+	unsigned int size = _entities.size();
+	for (unsigned int i = 0; i < size; i++)
+	{
+		if (_entities[i]->getRole() == "STUDENT")
+			cout << *(_entities[i]);
+	}
+}

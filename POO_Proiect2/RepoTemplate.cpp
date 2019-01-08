@@ -27,7 +27,7 @@ bool RepoTemplate<T>::remove(T* e) {
 
 template<class T>
 void RepoTemplate<T>::printAll() {
-	int size = _entities.size();
-	for (int i = 0; i < size; i++)
+	unsigned int size = _entities.size();
+	for (unsigned int i = 0; i < size; i++)
 		cout << *_entities[i] << endl;  //Derefrencing. Also impling operator overload for all
 }

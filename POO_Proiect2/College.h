@@ -11,11 +11,12 @@ using namespace std;
 #include "RepoRoom.h"
 #include "RepoPerson.h"
 #include "RepoActivity.h"
+#include "RepoStudentsRegister.h"
 
 class College
 {
 public:
-	//Constructor and destructor
+	//Constructors and destructors
 	College();
 	~College();
 
@@ -31,17 +32,26 @@ public:
 	void addActivity();
 	void delActivity();
 
+	//Student Register
+	void listStudentsOnly();
+
+	//Person Perspective
+	const Person* getPersonByName(string name); //Const person, so we can't modify the object. Considering its 'outside' use
+	void enrollToActivity(const Person* person);
+
 	void listAll(unsigned int choice);
 
 	//Public Relationships functions
 	void listAcceptedRoles();
 	void listAcceptedActivityTypes();
+	void listActivities();
 
 private:
 	//Repositories
 	RepoRoom _rr;  //Repo Rooms
 	RepoPerson _rp;  //Repo Persons
 	RepoActivity _ra;  //Repo Activities
+	RepoStudentsRegister _rsr;  //Registru studenti
 
 
 	//Roles and activities. These are asigned by the institute.

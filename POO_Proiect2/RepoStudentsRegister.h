@@ -4,8 +4,9 @@
 
 class RepoStudentsRegister : public RepoTemplate<RegisterPage> {
 public:
+	//Constructors and destructors
 	RepoStudentsRegister();
 	~RepoStudentsRegister();
 
-	//RegisterPage* findByName(string name);
+	RegisterPage* findByStudent(Person* student);
 };

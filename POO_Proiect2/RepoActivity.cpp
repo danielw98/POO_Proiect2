@@ -13,3 +13,11 @@ Activity* RepoActivity::findByName(string name) {
 
 	return NULL;
 }
+
+void RepoActivity::printSummary() {
+	unsigned int size = _entities.size();
+	for (unsigned int i = 0; i < size; i++)
+	{
+		cout << i << ". " << *(_entities[i]) << endl;
+	}
+}

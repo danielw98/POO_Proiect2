@@ -10,4 +10,6 @@ public:
 	Activity* findByName(string name);
 	Activity* findByRoom(string name);
 	Activity* findByOrganizer(string name);
+
+	void printSummary();
 };

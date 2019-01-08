@@ -20,12 +20,11 @@ string Activity::getName() {
 }
 
 ostream& operator <<(ostream& out, const Activity& src) {
-	cout << "___________ Activity ___________" << endl;
+	out << "___________ Activity ___________" << endl;
 	out << "Name: " << src._name << endl;
-	cout << "   _____ Organizer _____   " << endl;
+	out << "   _____ Organizer _____   " << endl;
 	out << *(src._organizer);
-	cout << "   _____    Room   _____   " << endl;
-	out << *(src._room);
+	out << "Room: " << *(src._room);
 	out << "Details:";
 	if (!(src._details.empty()))
 		out << src._details;

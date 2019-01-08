@@ -35,7 +35,16 @@ ostream& operator <<(ostream& out, const Person& src) {
 		out << src._cnp;
 	out << endl;
 
-	out << "Role: " << src._role << endl;;
-	
+	out << "Role: " << src._role << endl;
+	out << "Participating Activities: ";
+	if (!(src._activities.empty())) {
+		unsigned int size = src._activities.size();
+		out << src._activities[0];
+		for (unsigned int i = 1; i < size; i++) {
+			out << ", " << src._activities[i];
+		}
+	}
+
+	out << endl;
 	return out;
 }

@@ -11,7 +11,6 @@ public:
 	~DidacticActivity();
 
 	void printSpecificDetails();
-
 private:
 	vector<string> _acceptedDisciplines;
 };

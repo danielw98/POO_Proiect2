@@ -9,4 +9,6 @@ public:
 
 	Person* findByName(string name);
 	Person* findByCNP(string cnp);
+
+	void printStudentsOnly();  //It's the job of the Repo to filter what we need
 };
