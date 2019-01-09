@@ -13,6 +13,7 @@ public:
 
 	//Getters and Setters
 	Person* getStudent();
+	vector<string> getDisciplines() const;
 
 	friend ostream& operator <<(ostream& out, const RegisterPage& src);
 

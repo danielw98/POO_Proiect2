@@ -36,8 +36,11 @@ public:
 	void listStudentsOnly();
 
 	//Person Perspective
-	const Person* getPersonByName(string name); //Const person, so we can't modify the object. Considering its 'outside' use
-	void enrollToActivity(const Person* person);
+	Person* getPersonByName(string name); //Const person, so we can't modify the object. Considering its 'outside' use
+	Activity* getActivityByIndex(unsigned int index);
+	void enrollToActivity(Person* person);
+	void stopAttendingToActivity(Person* person);
+	void listAttendingActivities(Person* person);
 
 	void listAll(unsigned int choice);
 
@@ -65,4 +68,6 @@ private:
 	bool isThisActivityTypeAccepted(unsigned int index);
 	string getActivityTypeByIndex(unsigned int index);
 	bool isRoleAndActivityTypeCompatible(unsigned int typeIndex, string role);
+	bool canRoleParticipateToActivity(string role, string actType);
+	bool canStudentParticipateToDidactic(vector<string> studentDisciplines, vector<string> didacticDisciplines);
 };

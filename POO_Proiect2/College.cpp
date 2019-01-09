@@ -198,7 +198,7 @@ void College::addActivity() {
 
 	//Verificam compatibilitatea
 	if (!(this->isRoleAndActivityTypeCompatible(typeIndex, person->getRole()))) {
-		cout << "Ne pare rau, rolul persoanei nu este compatibil cua ctivitatea. Reincercati daca doriti." << endl;
+		cout << "We are sorry, this role is not compatible with the actiity. Try again, if you whis." << endl;
 		return;
 	}
 
@@ -254,12 +254,90 @@ void College::listStudentsOnly() {
 }
 
 //Person Perspective
-const Person* College::getPersonByName(string name) {
+Person* College::getPersonByName(string name) {
 	return _rp.findByName(name);
 }
-void College::enrollToActivity(const Person* person) {
-	//We print the activities
+Activity* College::getActivityByIndex(unsigned int index) {
+	return _ra.findByIndex(index);
+}
+void College::enrollToActivity(Person* person) {
+	//We print the activities and indexex
 	this->listActivities();
+
+	unsigned int activityIndex;
+	cout << "Please pick the activity (index) you want to participate: ";
+	cin >> activityIndex;
+
+	Activity* act = this->getActivityByIndex(activityIndex);
+	if (act == NULL) {
+		cout << "Something went wrong, probably the activity does not exist." << endl;
+		return;
+	}
+
+	//Check to see if you are the organizer
+	if (act->getOrganizer() == person) {
+		cout << "You are the organizer. You already participate..." << endl;
+		return;
+	}
+
+	string actType;
+	//We check the activity type
+	const DidacticActivity* dCheck = dynamic_cast<const DidacticActivity*>(act);
+	if (dCheck != NULL)
+		actType = "DIDACTIC";
+	const PromotingActivity* pCheck = dynamic_cast<const PromotingActivity*>(act);
+	if (pCheck != NULL)
+		actType = "PROMOTING";
+	const MaintenanceActivity* mCheck = dynamic_cast<const MaintenanceActivity*>(act);
+	if (mCheck != NULL)
+		actType = "MAINTENANCE";
+
+	if (!(this->canRoleParticipateToActivity(person->getRole(), actType))) {
+		cout << "We are sory, but your role doesn't allow you to participate at this activity. Try again, if you wish." << endl;
+		return;
+	}
+
+	//We check to see if disciplines match, only for students
+	if (person->getRole() == "STUDENT" && actType == "DIDACTIC") {
+		vector<string> studentDisciplines = _rsr.findByStudent(person)->getDisciplines();
+		vector<string> activityDIsciplines = dCheck->getAcceptedDisciplines();
+
+		if (!(canStudentParticipateToDidactic(studentDisciplines, activityDIsciplines))) {
+			cout << "We are sorry, but your discipline doesn't allow you to participate to this didactic activity." << endl;
+			return;
+		}
+	}
+
+	//Finally add activity to person and viceversa
+	act->addPersonToAttendes(person);
+	person->attendActivity(act);
+
+	cout << "Enrolled with succes" << endl;
+}
+void College::stopAttendingToActivity(Person* person) {
+	Activity* actToDel = NULL;
+	string name;
+
+	cout << "Please insert the activity name you want to stop attending: ";
+	getline(cin >> ws, name);
+	actToDel = _ra.findByName(name);
+
+	//If the activity was found
+	if (!actToDel)
+	{
+		cout << "Something went wrong, probably the activity does not exist" << endl;
+		return;
+	}
+
+	//Remove act from person and viceversa
+	person->stopAttendingActivity(actToDel);
+	actToDel->delPersonFromAttendes(person);
+
+	cout << "You stoped participating to this activity" << endl;
+}
+void College::listAttendingActivities(Person* person) {
+	cout << "Attending activities: " << endl;
+	person->listAttendingActivities();
 }
 
 void College::listAll(unsigned int choice)
@@ -343,6 +421,37 @@ bool College::isRoleAndActivityTypeCompatible(unsigned int typeIndex, string rol
 		return true;
 
 	//Pe viitor odata cu adaugarea rolurilor si activitatilor se pot adauga noi combinatii
+
+	return false;
+}
+bool College::canRoleParticipateToActivity(string role, string actType) {
+	if (role == "PROFFESSOR") //The proffessors can participate to anything
+		return true;
+	if (role == "HEADMASTER") //The headmaster have to participate to anything
+		return true;
+	if (role == "PROMOTER") {
+		if (actType == "PROMOTING")
+			return true;
+	}
+	if (role == "STUDENT") {
+		if (actType == "DIDACTIC")
+			return true;
+		if (actType == "PROMOTING")
+			return true;
+	}
+
+	return false;
+}
+bool College::canStudentParticipateToDidactic(vector<string> studentDisciplines, vector<string> didacticDisciplines) {
+	unsigned int stdSize = studentDisciplines.size();
+	unsigned int actSize = didacticDisciplines.size();
+
+	for (unsigned int i = 0; i < stdSize; i++) {
+		for (unsigned int j = 0; j < actSize; j++) {
+			if (studentDisciplines[i] == didacticDisciplines[j])
+				return true;
+		}
+	}
 
 	return false;
 }

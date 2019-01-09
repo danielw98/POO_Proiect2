@@ -8,18 +8,20 @@ class Activity;  //Forward declaration because we use Activity in Person and vic
 
 class Person {
 public:
+	//Constructors and destructors
 	Person(string name, string role);
 	Person(string name, string cnp, string role);
 	~Person();
 
-	//Getter and setter
+	//Getters and Setters
 	string getName();
 	string getCNP();
-	string getRole();
-	//Attending(Activity*)
-	//StopAttending
-	//Present yourself
-	//Tell us what are you attending
+	string getRole() const;
+
+	//Attending functions
+	void attendActivity(Activity* activity);
+	void stopAttendingActivity(Activity* activity);
+	void listAttendingActivities();
 
 	friend ostream& operator <<(ostream& out, const Person& src);
 

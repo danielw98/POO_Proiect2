@@ -4,9 +4,11 @@
 
 class RepoPerson : public RepoTemplate<Person> {
 public:
+	//Constructors and destructors
 	RepoPerson();
 	~RepoPerson();
 
+	//Find functions
 	Person* findByName(string name);
 	Person* findByCNP(string cnp);
 

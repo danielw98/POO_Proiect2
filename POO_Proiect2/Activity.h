@@ -15,7 +15,13 @@ public:
 	virtual ~Activity();
 
 	//Getters and Setters
-	string getName();
+	string getName() const;
+	const Person* getOrganizer() const;
+
+	//Attending functions
+	void addPersonToAttendes(Person* person);
+	void delPersonFromAttendes(Person* person);
+
 
 	virtual void printSpecificDetails() = 0; //This ensures this class is an interface and we can't instantiate it
 	friend ostream& operator <<(ostream& out, const Activity& src);

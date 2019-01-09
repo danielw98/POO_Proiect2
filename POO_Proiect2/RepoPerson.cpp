@@ -1,8 +1,10 @@
 #include "RepoPerson.h"
 
+//Constructors and destructors
 RepoPerson::RepoPerson() {}
 RepoPerson::~RepoPerson() {}
 
+//Find functions
 Person* RepoPerson::findByName(string name) {
 	unsigned int size = _entities.size();
 	for (unsigned int i = 0; i < size; i++)
@@ -13,7 +15,6 @@ Person* RepoPerson::findByName(string name) {
 
 	return NULL;
 }
-
 Person* RepoPerson::findByCNP(string cnp) {
 	unsigned int size = _entities.size();
 	for (unsigned int i = 0; i < size; i++)

@@ -1,9 +1,9 @@
 #include "RepoTemplate.h"
 #include <algorithm>
 
+//Constructors and destructors
 template<class T>
 RepoTemplate<T>::RepoTemplate() {}
-
 template<class T>
 RepoTemplate<T>::~RepoTemplate() {
 	//Clean-up TIME
@@ -16,7 +16,6 @@ template<class T>
 void RepoTemplate<T>::add(T* e) {
 	_entities.push_back(e);
 }
-
 template<class T>
 bool RepoTemplate<T>::remove(T* e) {
 	delete e; //Free pointer before removing and destroying
@@ -24,7 +23,6 @@ bool RepoTemplate<T>::remove(T* e) {
 	_entities.erase(std::remove(_entities.begin(), _entities.end(), e), _entities.end());
 	return true;
 }
-
 template<class T>
 void RepoTemplate<T>::printAll() {
 	unsigned int size = _entities.size();

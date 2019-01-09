@@ -10,7 +10,11 @@ public:
 	DidacticActivity(string name, string details, Room* room, Person* person, vector<string> disciplines);
 	~DidacticActivity();
 
+	//Getters and Setters
+	vector<string> getAcceptedDisciplines() const;
+
 	void printSpecificDetails();
+	friend ostream& operator <<(ostream& out, const DidacticActivity& src);
 private:
 	vector<string> _acceptedDisciplines;
 };

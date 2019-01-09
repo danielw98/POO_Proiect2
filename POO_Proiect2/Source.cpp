@@ -26,8 +26,8 @@ void print_personPerspective_banner(const Person* person) {
 	cout << "______ You are ______" << endl;
 	cout << *person << endl;
 	cout << "1. Enroll to activity" << endl;
-	cout << "2. Delete room" << endl;
-	cout << "3. List rooms" << endl;
+	cout << "2. Stop attending" << endl;
+	cout << "3. List my attending activities" << endl;
 	cout << "0. Leave submenu" << endl;
 	cout << endl;
 	cout << "Make your pick: ";
@@ -108,7 +108,7 @@ int main() {
 			string name;
 			getline(cin >> ws, name);
 
-			const Person* person = C.getPersonByName(name);
+			Person* person = C.getPersonByName(name);
 			if (person == NULL) {
 				cout << "Something went wrong, probably the person does not exist." << endl;
 				cout << "Leaving submenu.";
@@ -128,6 +128,14 @@ int main() {
 				case 1:
 					//You have to go to college to see the activities and enroll
 					C.enrollToActivity(person);
+					pause();
+					break;
+				case 2:
+					C.stopAttendingToActivity(person);
+					pause();
+					break;
+				case 3:
+					C.listAttendingActivities(person);
 					pause();
 					break;
 				case 0:

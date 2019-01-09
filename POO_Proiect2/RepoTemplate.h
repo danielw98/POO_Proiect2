@@ -8,6 +8,7 @@ template<class T>
 class RepoTemplate
 {
 public:
+	//Constructors and destructors
 	RepoTemplate();
 	~RepoTemplate();
 

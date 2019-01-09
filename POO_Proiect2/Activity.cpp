@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Activity.h"
 
 //Constructors and destructors
@@ -15,8 +16,19 @@ Activity::~Activity() {
 }
 
 //Getters and Setters
-string Activity::getName() {
+string Activity::getName() const{
 	return this->_name;
+}
+const Person* Activity::getOrganizer() const {
+	return this->_organizer;
+}
+
+//Attending functions
+void Activity::addPersonToAttendes(Person* person) {
+	_attendees.push_back(person);
+}
+void Activity::delPersonFromAttendes(Person* person) {
+	_attendees.erase(std::remove(_attendees.begin(), _attendees.end(), person), _attendees.end());
 }
 
 ostream& operator <<(ostream& out, const Activity& src) {

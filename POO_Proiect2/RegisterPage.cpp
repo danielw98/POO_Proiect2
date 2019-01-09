@@ -11,6 +11,9 @@ RegisterPage::~RegisterPage() {}
 Person* RegisterPage::getStudent() {
 	return _student;
 }
+vector<string> RegisterPage::getDisciplines() const {
+	return _enrolledDisciplines;
+}
 
 ostream& operator <<(ostream& out, const RegisterPage& src) {
 	out << "________ Register Page ________" << endl;

@@ -8,5 +8,6 @@ public:
 	RepoStudentsRegister();
 	~RepoStudentsRegister();
 
-	RegisterPage* findByStudent(Person* student);
+	//Find functions
+	RegisterPage* findByStudent(const Person* student);
 };
